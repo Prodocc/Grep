@@ -1,0 +1,11 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="JenkinsSuite" parallel="methods" thread-count="3">
+
+    <test name="JenkinsTest">
+        <classes>
+            <class name="Greph"/>
+        </classes>
+    </test>
+
+</suite>
