@@ -1,5 +1,4 @@
-
-import java.util.Objects;
+import java.util.ArrayList;
 import java.util.regex.*;
 
 import java.io.IOException;
@@ -8,9 +7,10 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 
-public class GrephFunctional {
+class GrepFunctional {
 
-    public static void grephFun(String fileName, String word, boolean ignoreCase, boolean regexCondition, boolean filterInvert) throws IOException {
+    static List<String> grepFun(boolean ignoreCase, boolean regexCondition,
+                                boolean filterInvert, String fileName, String word) throws IOException {
 
         if (fileName == null) {
             throw new IllegalArgumentException("Write file name");
@@ -18,34 +18,33 @@ public class GrephFunctional {
 
         Pattern pattern;
         Matcher matcher;
-        int caseCondition;
+        String regExp;
+
+        if (regexCondition) {
+            regExp = word;
+        } else {
+            regExp = Pattern.quote(word);
+        }
 
         if (ignoreCase) {
-            caseCondition = Pattern.CASE_INSENSITIVE;
+            pattern = Pattern.compile(regExp, Pattern.CASE_INSENSITIVE);
         } else {
-            caseCondition = Pattern.LITERAL;
+            pattern = Pattern.compile(regExp);
         }
 
         List<String> lines = Files.readAllLines(Paths.get(fileName), StandardCharsets.UTF_8);
-        if (filterInvert) {
-            if (regexCondition ) {
+        List<String> correctLines = new ArrayList<>();
 
-            }
-        } else {
-
-        }
         for (String line : lines) {
-
-        }
-    }
-
-    public static void regexConditionLoop(List<String> lines, Matcher mathcer, Pattern pattern, String word, int caseCondition) {
-        pattern = Pattern.compile(word, caseCondition);
-        for (String line : lines) {
-            mathcer = pattern.matcher(line);
-            if (mathcer.find()) {
-                System.out.println(line);
+            matcher = pattern.matcher(line);
+            if (filterInvert && !matcher.find()) {
+                correctLines.add(line);
+            } else {
+                if (matcher.find()) {
+                    correctLines.add(line);
+                }
             }
         }
+        return correctLines;
     }
 }

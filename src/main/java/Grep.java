@@ -6,7 +6,7 @@ import org.kohsuke.args4j.Option;
 import java.io.IOException;
 import java.util.Arrays;
 
-public class Greph {
+public class Grep {
 
     @Option(name = "-i", usage = "Case ignore")
     private boolean ignoreCase;
@@ -17,26 +17,27 @@ public class Greph {
     @Option(name = "-v", usage = "Invert filter condition")
     private boolean filterInvert;
 
-    @Argument(required = true, usage = "File name")
+    @Argument(required = true, usage = "File name", index = 1)
     private String fileName;
 
-    @Option(name = "-w", usage = "Word to find")
+    @Argument(required = true, usage = "Word to find")
     private String word;
 
     public static void main(String[] args) throws IOException {
-        new Greph().doMain(args);
+        new Grep().doMain(args);
     }
 
     public void doMain(String[] args) throws IOException {
         CmdLineParser parser = new CmdLineParser(this);
+
         try {
             parser.parseArgument(args);
         } catch (CmdLineException ex) {
             System.err.println(ex.getMessage());
-            System.err.println();
+            System.err.println("Expected argument: [-i] [-r] [-v] word filename.txt");
             parser.printUsage(System.err);
         }
         System.out.println(Arrays.toString(args));
-        GrephFunctional.grephFun(fileName, word, ignoreCase, regexCondition, filterInvert);
+        GrepFunctional.grepFun(ignoreCase, regexCondition, filterInvert, fileName, word);
     }
 }
