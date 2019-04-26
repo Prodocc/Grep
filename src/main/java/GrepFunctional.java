@@ -1,3 +1,4 @@
+
 import java.util.ArrayList;
 import java.util.regex.*;
 
@@ -11,10 +12,6 @@ class GrepFunctional {
 
     static List<String> grepFun(boolean ignoreCase, boolean regexCondition,
                                 boolean filterInvert, String fileName, String word) throws IOException {
-
-        if (fileName == null) {
-            throw new IllegalArgumentException("Write file name");
-        }
 
         Pattern pattern;
         Matcher matcher;
@@ -37,7 +34,7 @@ class GrepFunctional {
 
         for (String line : lines) {
             matcher = pattern.matcher(line);
-            if (filterInvert && !matcher.find()) {
+            if (filterInvert == !matcher.find()) {
                 correctLines.add(line);
             } else {
                 if (matcher.find()) {

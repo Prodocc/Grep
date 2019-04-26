@@ -38,6 +38,8 @@ public class Grep {
             parser.printUsage(System.err);
         }
         System.out.println(Arrays.toString(args));
-        GrepFunctional.grepFun(ignoreCase, regexCondition, filterInvert, fileName, word);
+        for (String str : GrepFunctional.grepFun(ignoreCase, regexCondition, filterInvert, fileName, word)) {
+            System.out.println(str);
+        }
     }
 }
